@@ -25,6 +25,7 @@ class DocxSearchApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Docx Search GUI")
+        # self.root.geometry("500x400")
 
         self.title_label = ttk.Label(root, text="Docx-Search GUI")
         self.title_label.grid(row=2, column=0, padx=3, pady=3, columnspan=4)
@@ -32,10 +33,10 @@ class DocxSearchApp:
         self.target_word_label = ttk.Label(root, text="Query:")
         self.target_word_label.grid(row=3, column=0, padx=4, pady=4, columnspan=1)
 
-        self.target_word_entry = ttk.Entry(root)
+        self.target_word_entry = ttk.Entry(root, width=45)  # Increase the width of the entry widget
         self.target_word_entry.grid(row=3, column=1, padx=4, pady=4, columnspan=2)
         
-        self.clear_button = ttk.Button(root, text="X", command=self.search)
+        self.clear_button = ttk.Button(root, text="X", command=self.clear_entries, width=5)
         self.clear_button.grid(row=3, column=3, columnspan=1, pady=4, padx=4)
 
         self.search_button = ttk.Button(root, text="Search", command=self.search)
@@ -58,6 +59,10 @@ class DocxSearchApp:
 
         self.found_files_listbox.bind('<Double-Button-1>', self.open_selected_file)
 
+    def clear_entries(self):
+        self.target_word_entry.delete(0, tk.END)
+        self.found_files_listbox.delete(0, tk.END)
+    
     def check(self, fpath, target):
         try:
             doc = Document(fpath)
