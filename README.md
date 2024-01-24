@@ -1,8 +1,13 @@
 # docx-search
 
 <p align="center">
-  <img src="https://github.com/hirusha-adi/docx-search/assets/36286877/3c2d9933-8460-43ba-b8b3-773940cc3cb4" />
+  <img src="https://github.com/Sinhala-Typing/docx-search-tk/assets/36286877/a1be2524-80e1-4b5e-8c83-28ceae66e808" />
+  <br/>
+  <br/>
+  <br/>
+  <img src="https://github.com/Sinhala-Typing/docx-search-tk/assets/36286877/049dca93-ce24-4eb4-998c-cd34cbeeb94f" />
 </p>
+
 
 **Description:**
 
@@ -17,6 +22,10 @@ The `docx-search` Python script is a tool designed to search for a specified wor
 - **Graphical User Interface**
 
   - Check out the below demonstration:
+
+https://github.com/Sinhala-Typing/docx-search-tk/assets/36286877/a93352a4-28d3-4f8c-8f5c-39e9c883dd91
+
+
 
 **Getting Started:**
 
