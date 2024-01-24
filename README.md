@@ -1,6 +1,5 @@
 # docx-search
 
-
 <p align="center">
   <img src="https://github.com/hirusha-adi/docx-search/assets/36286877/3c2d9933-8460-43ba-b8b3-773940cc3cb4" />
 </p>
@@ -15,12 +14,9 @@ The `docx-search` Python script is a tool designed to search for a specified wor
 - **Logging:** Detailed logging is implemented, capturing information about the search process, including the presence or absence of the target word in each document.
 - **Multi-threading:** The script utilizes the `concurrent.futures.ThreadPoolExecutor` to concurrently process multiple Word documents, improving overall search performance.
 
-**Graphical User Interface**
+- **Graphical User Interface**
 
-A GUI for this can be found at
-
-- [Sinhala-Typing/docx-search-gui-tk](https://github.com/Sinhala-Typing/docx-search-gui-tk)
-- [Sinhala-Typing/docx-search-gui-customtkinter](https://github.com/Sinhala-Typing/docx-search-gui-customtkinter)
+  - Check out the below demonstration:
 
 **Getting Started:**
 
@@ -39,12 +35,6 @@ A GUI for this can be found at
      ```
      python search.py
      ```
-   - The script will search for the specified target word in all `.docx` files within the current working directory by default.
-
-   - Optionally, you can specify the target directory and word using command-line arguments:
-     ```
-     python search.py --dir /path/to/documents --word example
-     ```
 
 3. **Logging:**
 
@@ -53,28 +43,6 @@ A GUI for this can be found at
 4. **Output:**
 
    - The script outputs information about the presence or absence of the target word in each processed document.
-
-5. **Execution Time:**
-   - The script logs the execution time, providing insights into the performance of the search operation.
-
-**Using as a Module:**
-
-1. **Import the Module:**
-
-   - Import the `docx_search` module into your Python script:
-     ```python
-     from docx_search import docx_search
-     ```
-
-2. **Perform Word Search:**
-   - Call the `docx_search` function with the desired target directory and word:
-     ```python
-     docx_search(target_dir="/path/to/documents", target_word="example")
-     ```
-
-**Notes:**
-
-- Ensure the `python-docx` library is installed before running the script.
 
 **Contributing:**
 
@@ -87,5 +55,3 @@ A GUI for this can be found at
 **Acknowledgments:**
 
 - This readme.md and the docstrings were generated with ChatGPT, a language model developed by OpenAI.
-
-
