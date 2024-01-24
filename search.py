@@ -24,30 +24,36 @@ logger = logging.getLogger(__name__)
 class DocxSearchApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Docx Search App")
+        self.root.title("Docx Search GUI")
 
-        self.target_word_label = ttk.Label(root, text="Enter Target Word:")
-        self.target_word_label.grid(row=0, column=0, padx=10, pady=10)
+        self.title_label = ttk.Label(root, text="Docx-Search GUI")
+        self.title_label.grid(row=2, column=0, padx=3, pady=3, columnspan=4)
+        
+        self.target_word_label = ttk.Label(root, text="Query:")
+        self.target_word_label.grid(row=3, column=0, padx=4, pady=4, columnspan=1)
 
         self.target_word_entry = ttk.Entry(root)
-        self.target_word_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.target_word_entry.grid(row=3, column=1, padx=4, pady=4, columnspan=2)
+        
+        self.clear_button = ttk.Button(root, text="X", command=self.search)
+        self.clear_button.grid(row=3, column=3, columnspan=1, pady=4, padx=4)
 
         self.search_button = ttk.Button(root, text="Search", command=self.search)
-        self.search_button.grid(row=1, column=0, columnspan=2, pady=10)
+        self.search_button.grid(row=4, column=0, columnspan=4, pady=4, padx=4)
 
         self.result_label = ttk.Label(root, text="")
-        self.result_label.grid(row=2, column=0, columnspan=2, pady=10)
+        self.result_label.grid(row=5, column=0, columnspan=2, pady=10)
 
         # Add scrollbars to the Listbox
         self.found_files_listbox = tk.Listbox(root, selectmode=tk.SINGLE, exportselection=0, height=10, width=50)
-        self.found_files_listbox.grid(row=3, column=0, columnspan=2, pady=10, padx=10, sticky="nsew")
+        self.found_files_listbox.grid(row=6, column=0, columnspan=3, pady=4, padx=4, sticky="nsew")
 
         self.scrollbar_y = ttk.Scrollbar(root, orient="vertical", command=self.found_files_listbox.yview)
-        self.scrollbar_y.grid(row=3, column=2, sticky="ns")
+        self.scrollbar_y.grid(row=6, column=3, sticky="ns", columnspan=1, rowspan=1)
         self.found_files_listbox.configure(yscrollcommand=self.scrollbar_y.set)
 
         self.scrollbar_x = ttk.Scrollbar(root, orient="horizontal", command=self.found_files_listbox.xview)
-        self.scrollbar_x.grid(row=4, column=0, columnspan=2, sticky="ew")
+        self.scrollbar_x.grid(row=7, column=0, columnspan=3, sticky="ew")
         self.found_files_listbox.configure(xscrollcommand=self.scrollbar_x.set)
 
         self.found_files_listbox.bind('<Double-Button-1>', self.open_selected_file)
