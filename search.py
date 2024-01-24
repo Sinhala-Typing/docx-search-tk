@@ -108,8 +108,18 @@ class DocxSearchApp:
         self.result_label = ttk.Label(root, text="")
         self.result_label.grid(row=2, column=0, columnspan=2, pady=10)
 
-        self.found_files_listbox = tk.Listbox(root)
-        self.found_files_listbox.grid(row=3, column=0, columnspan=2, pady=10)
+        # Add scrollbars to the Listbox
+        self.found_files_listbox = tk.Listbox(root, selectmode=tk.SINGLE, exportselection=0, height=10, width=50)
+        self.found_files_listbox.grid(row=3, column=0, columnspan=2, pady=10, padx=10, sticky="nsew")
+
+        self.scrollbar_y = ttk.Scrollbar(root, orient="vertical", command=self.found_files_listbox.yview)
+        self.scrollbar_y.grid(row=3, column=2, sticky="ns")
+        self.found_files_listbox.configure(yscrollcommand=self.scrollbar_y.set)
+
+        self.scrollbar_x = ttk.Scrollbar(root, orient="horizontal", command=self.found_files_listbox.xview)
+        self.scrollbar_x.grid(row=4, column=0, columnspan=2, sticky="ew")
+        self.found_files_listbox.configure(xscrollcommand=self.scrollbar_x.set)
+
         self.found_files_listbox.bind('<Double-Button-1>', self.open_selected_file)
 
     def search(self):
