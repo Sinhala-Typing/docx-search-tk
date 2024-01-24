@@ -1,13 +1,12 @@
 import os
-import logging
 import json
-from docx import Document
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
 import tkinter as tk
 from tkinter import ttk
+from docx import Document
+from concurrent.futures import ThreadPoolExecutor
+import logging
+from datetime import datetime
 
-# Configure logger
 if not os.path.isdir('logs'):
     os.mkdir('logs')
 
@@ -21,75 +20,6 @@ logging.basicConfig(level=logging.DEBUG, format=log_format, handlers=[
 ])
 
 logger = logging.getLogger(__name__)
-
-def check(fpath, target):
-    try:
-        doc = Document(fpath)
-        for paragraph in doc.paragraphs:
-            if target in paragraph.text:
-                return True
-        return False
-    except Exception as e:
-        logger.error("Error processing %s: %s" % (fpath, e))
-        return False
-
-def process_file(file):
-    fname, target = file
-    fpath = os.path.join(os.getcwd(), fname)
-    if check(fpath, target):
-        logger.info("'%s' found in %s" % (target, fname))
-        return fpath
-    else:
-        logger.debug("'%s' not found in %s" % (target, fname))
-        return None
-
-def load_config_json(file_list, target_word):
-    config_file_path = os.path.join(os.getcwd(), 'config.json')
-
-    if os.path.exists(config_file_path):
-        logger.debug(f"Found config file at: {config_file_path}")
-        with open(config_file_path, 'r') as config_file:
-            config_data = json.load(config_file)
-
-            if 'dirs' in config_data and isinstance(config_data['dirs'], list):
-                logger.debug(f"Found {len(config_data['dirs'])} directories in 'dirs'")
-                for directory in config_data['dirs']:
-                    logger.debug(f"Traversing through: '{directory}'")
-                    directory_path = os.path.abspath(directory)
-
-                    for entry in os.scandir(directory_path):
-                        if entry.is_file() and entry.name.endswith(".docx"):
-                            file_list.append((entry.path, target_word))
-                        elif entry.is_dir():
-                            for root, _, files in os.walk(entry.path):
-                                for fname in files:
-                                    if fname.endswith(".docx"):
-                                        file_list.append((os.path.join(root, fname), target_word))
-            else:
-                logger.debug("Error in 'dirs' key of config file")
-
-def main(target_dir=None, target_word=None):
-    if target_word is None or target_word == '':
-        raise ValueError("target_word cannot be None or an empty string. Please pass in a valid value.")
-
-    if target_dir is None:
-        target_dir = os.getcwd()
-
-    file_list = []
-    load_config_json(file_list, target_word)
-    logger.debug(f"Discovered {len(file_list)} files.")
-    
-    found_files = []
-    with ThreadPoolExecutor() as executor:
-        for result in executor.map(process_file, file_list):
-            if result is not None:
-                found_files.append(result)
-
-    return found_files
-
-def docx_search(target_dir=None, target_word=None):
-    return main(target_dir=target_dir, target_word=target_word)
-
 
 class DocxSearchApp:
     def __init__(self, root):
@@ -122,14 +52,80 @@ class DocxSearchApp:
 
         self.found_files_listbox.bind('<Double-Button-1>', self.open_selected_file)
 
+    def check(self, fpath, target):
+        try:
+            doc = Document(fpath)
+            for paragraph in doc.paragraphs:
+                if target in paragraph.text:
+                    return True
+            return False
+        except Exception as e:
+            logger.error("Error processing %s: %s" % (fpath, e))
+            return False
+
+    def process_file(self, file):
+        fname, target = file
+        fpath = os.path.join(os.getcwd(), fname)
+        if self.check(fpath, target):
+            logger.info("'%s' found in %s" % (target, fname))
+            return fpath
+        else:
+            logger.debug("'%s' not found in %s" % (target, fname))
+            return None
+
+    def load_config_json(self, file_list, target_word):
+        config_file_path = os.path.join(os.getcwd(), 'config.json')
+
+        if os.path.exists(config_file_path):
+            logger.debug(f"Found config file at: {config_file_path}")
+            with open(config_file_path, 'r') as config_file:
+                config_data = json.load(config_file)
+
+                if 'dirs' in config_data and isinstance(config_data['dirs'], list):
+                    logger.debug(f"Found {len(config_data['dirs'])} directories in 'dirs'")
+                    for directory in config_data['dirs']:
+                        logger.debug(f"Traversing through: '{directory}'")
+                        directory_path = os.path.abspath(directory)
+
+                        for entry in os.scandir(directory_path):
+                            if entry.is_file() and entry.name.endswith(".docx"):
+                                file_list.append((entry.path, target_word))
+                            elif entry.is_dir():
+                                for root, _, files in os.walk(entry.path):
+                                    for fname in files:
+                                        if fname.endswith(".docx"):
+                                            file_list.append((os.path.join(root, fname), target_word))
+                else:
+                    logger.debug("Error in 'dirs' key of config file")
+
+    def main(self, target_dir=None, target_word=None):
+        if target_word is None or target_word == '':
+            raise ValueError("target_word cannot be None or an empty string. Please pass in a valid value.")
+
+        if target_dir is None:
+            target_dir = os.getcwd()
+
+        file_list = []
+        self.load_config_json(file_list, target_word)
+        logger.debug(f"Discovered {len(file_list)} files.")
+
+        found_files = []
+        with ThreadPoolExecutor() as executor:
+            for result in executor.map(self.process_file, file_list):
+                if result is not None:
+                    found_files.append(result)
+
+        return found_files
+
+    def docx_search(self, target_dir=None, target_word=None):
+        return self.main(target_dir=target_dir, target_word=target_word)
+
     def search(self):
         target_word = self.target_word_entry.get()
-        found_files = docx_search(target_word=target_word)
+        found_files = self.docx_search(target_word=target_word)
         self.result_label.config(text=f"Found '{target_word}' in {len(found_files)} files")
 
-        # Clear previous entries
         self.found_files_listbox.delete(0, tk.END)
-        # Add found files to the listbox
         for file_path in found_files:
             self.found_files_listbox.insert(tk.END, file_path)
 
@@ -138,7 +134,6 @@ class DocxSearchApp:
         if selected_index:
             selected_file = self.found_files_listbox.get(selected_index)
             os.startfile(selected_file)
-
 
 if __name__ == "__main__":
     root = tk.Tk()
