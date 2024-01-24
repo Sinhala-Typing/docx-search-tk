@@ -45,12 +45,12 @@ class ProgressWindow(tk.Toplevel):
 class DocxSearchApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Docx Search GUI")
+        self.root.title("Docx-Search GUI v0.1")
         self.root.resizable(width=False, height=False)
         
         title_font = font.Font(family="Helvetica", size=16, weight="bold")
         
-        self.title_label = ttk.Label(root, text="Docx-Search GUI", font=title_font)
+        self.title_label = ttk.Label(root, text="Docx-Search GUI v0.1", font=title_font)
         self.title_label.grid(row=2, column=0, padx=3, pady=3, columnspan=5)
         
         self.target_word_label = ttk.Label(root, text="Query:")
