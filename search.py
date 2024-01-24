@@ -1,13 +1,14 @@
-import os
-import json
-import tkinter as tk
-from tkinter import ttk
-from docx import Document
-from concurrent.futures import ThreadPoolExecutor
 import logging
+import os
+import threading
+import time
 from datetime import datetime
-from tkinter import font
-import time, threading 
+from concurrent.futures import ThreadPoolExecutor
+import json
+from docx import Document
+import tkinter as tk
+from tkinter import font, ttk
+
 
 if not os.path.isdir('logs'):
     os.mkdir('logs')
