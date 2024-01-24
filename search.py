@@ -83,6 +83,7 @@ class DocxSearchApp:
     def clear_entries(self):
         self.target_word_entry.delete(0, tk.END)
         self.found_files_listbox.delete(0, tk.END)
+        self.result_label.config(text=f"Made by @hirushaadi")
     
     def check(self, fpath, target):
         try:
@@ -159,12 +160,17 @@ class DocxSearchApp:
         self.root.update_idletasks()
 
         def search_in_thread():
+            start_time = time.time()
             found_files = self.docx_search(target_word=target_word)
+            end_time = time.time()
+            runtime = end_time - start_time
+            
             progress_window.progress_thread.running = False
             progress_window.progress_thread.join()
 
-            self.result_label.config(text=f"Found '{target_word}' in {len(found_files)} files")
-
+            self.result_label.config(text=f"Found '{target_word}' in {len(found_files)} files in {runtime:2f}s")
+            logger.debug(f"Found '{target_word}' in {len(found_files)} files in {runtime:2f}s")
+            
             self.found_files_listbox.delete(0, tk.END)
             for file_path in found_files:
                 self.found_files_listbox.insert(tk.END, file_path)
