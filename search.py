@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 import logging
 from datetime import datetime
 from tkinter import font
+import time, threading 
 
 if not os.path.isdir('logs'):
     os.mkdir('logs')
@@ -22,6 +23,24 @@ logging.basicConfig(level=logging.DEBUG, format=log_format, handlers=[
 
 logger = logging.getLogger(__name__)
 
+class ProgressWindow(tk.Toplevel):
+    def __init__(self, root):
+        super().__init__(root)
+        self.title("Searching...")
+        self.geometry("300x50")
+        self.progressbar = ttk.Progressbar(self, mode="indeterminate", length=280)
+        self.progressbar.pack(pady=10)
+        self.progress_thread = threading.Thread(target=self.run_progress)
+        self.progress_thread.start()
+
+    def run_progress(self):
+        self.progressbar.start()
+        while getattr(self.progress_thread, "running", True):
+            self.update_idletasks()
+            time.sleep(0.05)
+        self.progressbar.stop()
+        self.destroy()
+
 class DocxSearchApp:
     def __init__(self, root):
         self.root = root
@@ -36,7 +55,7 @@ class DocxSearchApp:
         self.target_word_label = ttk.Label(root, text="Query:")
         self.target_word_label.grid(row=3, column=0, padx=4, pady=4, columnspan=1)
 
-        self.target_word_entry = ttk.Entry(root, width=45)  # Increase the width of the entry widget
+        self.target_word_entry = ttk.Entry(root, width=45)
         self.target_word_entry.grid(row=3, column=1, padx=4, pady=4, columnspan=2)
         
         self.clear_button = ttk.Button(root, text="X", command=self.clear_entries, width=5)
@@ -48,7 +67,6 @@ class DocxSearchApp:
         self.result_label = ttk.Label(root, text="Made by @hirushaadi")
         self.result_label.grid(row=5, column=0, columnspan=4, pady=4)
 
-        # Add scrollbars to the Listbox
         self.found_files_listbox = tk.Listbox(root, selectmode=tk.SINGLE, exportselection=0, height=10, width=55)
         self.found_files_listbox.grid(row=6, column=0, columnspan=3, pady=4, padx=4, sticky="nsew")
 
@@ -136,12 +154,22 @@ class DocxSearchApp:
 
     def search(self):
         target_word = self.target_word_entry.get()
-        found_files = self.docx_search(target_word=target_word)
-        self.result_label.config(text=f"Found '{target_word}' in {len(found_files)} files")
 
-        self.found_files_listbox.delete(0, tk.END)
-        for file_path in found_files:
-            self.found_files_listbox.insert(tk.END, file_path)
+        progress_window = ProgressWindow(self.root)
+        self.root.update_idletasks()
+
+        def search_in_thread():
+            found_files = self.docx_search(target_word=target_word)
+            progress_window.progress_thread.running = False
+            progress_window.progress_thread.join()
+
+            self.result_label.config(text=f"Found '{target_word}' in {len(found_files)} files")
+
+            self.found_files_listbox.delete(0, tk.END)
+            for file_path in found_files:
+                self.found_files_listbox.insert(tk.END, file_path)
+
+        threading.Thread(target=search_in_thread).start()
 
     def open_selected_file(self, event):
         selected_index = self.found_files_listbox.curselection()
