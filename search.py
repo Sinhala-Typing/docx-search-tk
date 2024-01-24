@@ -6,6 +6,7 @@ from docx import Document
 from concurrent.futures import ThreadPoolExecutor
 import logging
 from datetime import datetime
+from tkinter import font
 
 if not os.path.isdir('logs'):
     os.mkdir('logs')
@@ -25,9 +26,11 @@ class DocxSearchApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Docx Search GUI")
-        # self.root.geometry("500x400")
-
-        self.title_label = ttk.Label(root, text="Docx-Search GUI")
+        self.root.resizable(width=False, height=False)
+        
+        title_font = font.Font(family="Helvetica", size=16, weight="bold")
+        
+        self.title_label = ttk.Label(root, text="Docx-Search GUI", font=title_font)
         self.title_label.grid(row=2, column=0, padx=3, pady=3, columnspan=4)
         
         self.target_word_label = ttk.Label(root, text="Query:")
@@ -39,14 +42,14 @@ class DocxSearchApp:
         self.clear_button = ttk.Button(root, text="X", command=self.clear_entries, width=5)
         self.clear_button.grid(row=3, column=3, columnspan=1, pady=4, padx=4)
 
-        self.search_button = ttk.Button(root, text="Search", command=self.search)
+        self.search_button = ttk.Button(root, text="Search", command=self.search, width=62)
         self.search_button.grid(row=4, column=0, columnspan=4, pady=4, padx=4)
 
-        self.result_label = ttk.Label(root, text="")
-        self.result_label.grid(row=5, column=0, columnspan=2, pady=10)
+        self.result_label = ttk.Label(root, text="Made by @hirushaadi")
+        self.result_label.grid(row=5, column=0, columnspan=4, pady=4)
 
         # Add scrollbars to the Listbox
-        self.found_files_listbox = tk.Listbox(root, selectmode=tk.SINGLE, exportselection=0, height=10, width=50)
+        self.found_files_listbox = tk.Listbox(root, selectmode=tk.SINGLE, exportselection=0, height=10, width=55)
         self.found_files_listbox.grid(row=6, column=0, columnspan=3, pady=4, padx=4, sticky="nsew")
 
         self.scrollbar_y = ttk.Scrollbar(root, orient="vertical", command=self.found_files_listbox.yview)
