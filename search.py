@@ -110,7 +110,8 @@ class DocxSearchApp:
 
         self.found_files_listbox = tk.Listbox(root)
         self.found_files_listbox.grid(row=3, column=0, columnspan=2, pady=10)
-    
+        self.found_files_listbox.bind('<Double-Button-1>', self.open_selected_file)
+
     def search(self):
         target_word = self.target_word_entry.get()
         found_files = docx_search(target_word=target_word)
@@ -121,6 +122,12 @@ class DocxSearchApp:
         # Add found files to the listbox
         for file_path in found_files:
             self.found_files_listbox.insert(tk.END, file_path)
+
+    def open_selected_file(self, event):
+        selected_index = self.found_files_listbox.curselection()
+        if selected_index:
+            selected_file = self.found_files_listbox.get(selected_index)
+            os.startfile(selected_file)
 
 
 if __name__ == "__main__":
