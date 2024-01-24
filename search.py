@@ -50,32 +50,32 @@ class DocxSearchApp:
         title_font = font.Font(family="Helvetica", size=16, weight="bold")
         
         self.title_label = ttk.Label(root, text="Docx-Search GUI", font=title_font)
-        self.title_label.grid(row=2, column=0, padx=3, pady=3, columnspan=4)
+        self.title_label.grid(row=2, column=0, padx=3, pady=3, columnspan=5)
         
         self.target_word_label = ttk.Label(root, text="Query:")
-        self.target_word_label.grid(row=3, column=0, padx=4, pady=4, columnspan=1)
+        self.target_word_label.grid(row=3, column=0, columnspan=1)
 
         self.target_word_entry = ttk.Entry(root, width=45)
-        self.target_word_entry.grid(row=3, column=1, padx=4, pady=4, columnspan=2)
+        self.target_word_entry.grid(row=3, column=1,  columnspan=2)
         
-        self.clear_button = ttk.Button(root, text="X", command=self.clear_entries, width=5)
-        self.clear_button.grid(row=3, column=3, columnspan=1, pady=4, padx=4)
+        self.clear_button = ttk.Button(root, text="Clear", command=self.clear_entries, width=12)
+        self.clear_button.grid(row=3, column=3, columnspan=1,)
 
         self.search_button = ttk.Button(root, text="Search", command=self.search, width=62)
-        self.search_button.grid(row=4, column=0, columnspan=4, pady=4, padx=4)
+        self.search_button.grid(row=4, column=0, columnspan=5)
 
         self.result_label = ttk.Label(root, text="Made by @hirushaadi")
-        self.result_label.grid(row=5, column=0, columnspan=4, pady=4)
+        self.result_label.grid(row=5, column=0, columnspan=5, pady=4)
 
         self.found_files_listbox = tk.Listbox(root, selectmode=tk.SINGLE, exportselection=0, height=10, width=55)
-        self.found_files_listbox.grid(row=6, column=0, columnspan=3, pady=4, padx=4, sticky="nsew")
+        self.found_files_listbox.grid(row=6, column=0, columnspan=4, pady=4, padx=4, sticky="nsew")
 
         self.scrollbar_y = ttk.Scrollbar(root, orient="vertical", command=self.found_files_listbox.yview)
-        self.scrollbar_y.grid(row=6, column=3, sticky="ns", columnspan=1, rowspan=1)
+        self.scrollbar_y.grid(row=6, column=4, sticky="ns", columnspan=1, rowspan=1)
         self.found_files_listbox.configure(yscrollcommand=self.scrollbar_y.set)
 
         self.scrollbar_x = ttk.Scrollbar(root, orient="horizontal", command=self.found_files_listbox.xview)
-        self.scrollbar_x.grid(row=7, column=0, columnspan=3, sticky="ew")
+        self.scrollbar_x.grid(row=7, column=0, columnspan=4, sticky="ew")
         self.found_files_listbox.configure(xscrollcommand=self.scrollbar_x.set)
 
         self.found_files_listbox.bind('<Double-Button-1>', self.open_selected_file)
