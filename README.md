@@ -1,17 +1,15 @@
-# docx-search
+# .docx Search
 
 <p align="center">
-  <img src="https://github.com/Sinhala-Typing/docx-search-tk/assets/36286877/a1be2524-80e1-4b5e-8c83-28ceae66e808" />
-  <br/>
-  <br/>
-  <br/>
+  <img src="https://github.com/user-attachments/assets/ac9d8010-4ec6-4928-b7e0-d1782a134726" />
+</p>
+
+The `docx-search` Python script is a tool designed to search for a specified word within Microsoft Word (.docx) documents in a given directory. It utilizes the `python-docx` library for handling Word documents and implements multi-threading to improve search efficiency.
+
+<p align="center">
   <img src="https://github.com/Sinhala-Typing/docx-search-tk/assets/36286877/049dca93-ce24-4eb4-998c-cd34cbeeb94f" />
 </p>
 
-
-**Description:**
-
-The `docx-search` Python script is a tool designed to search for a specified word within Microsoft Word (.docx) documents in a given directory. It utilizes the `python-docx` library for handling Word documents and implements multi-threading to improve search efficiency.
 
 **Features:**
 
@@ -52,15 +50,3 @@ https://github.com/Sinhala-Typing/docx-search-tk/assets/36286877/a93352a4-28d3-4
 4. **Output:**
 
    - The script outputs information about the presence or absence of the target word in each processed document.
-
-**Contributing:**
-
-- Contributions are welcome! Feel free to fork the repository, make improvements, and create a pull request.
-
-**License:**
-
-- This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-**Acknowledgments:**
-
-- This readme.md and the docstrings were generated with ChatGPT, a language model developed by OpenAI.
